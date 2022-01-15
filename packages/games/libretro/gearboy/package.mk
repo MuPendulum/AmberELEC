@@ -15,8 +15,8 @@
 ################################################################################
 
 PKG_NAME="gearboy"
-PKG_VERSION="cd9c5f76145ee7063fd1708d51f98a6d2d373b9d"
-PKG_SHA256="7030a9647f11ab0667e9074b1006d143b416ce22803e586b2beea3ee0347a787"
+PKG_VERSION="6acb75819c130ba9d9c134a46e074b2a22161034"
+PKG_SHA256="39a1334b988f0f384eaea9d78cf0624a30c87b351b858552ae96fac9542ba54a"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
