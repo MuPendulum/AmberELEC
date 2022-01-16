@@ -38,7 +38,7 @@ PKG_TOOLCHAIN="make"
 PKG_AUTORECONF="no"
 
 make_target() {
-  make -f Makefile.libretro
+  make -f Makefile.libretro platform=rk3326
 }
 
 makeinstall_target() {
