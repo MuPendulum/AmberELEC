@@ -1,0 +1,31 @@
+diff --git a/Makefile b/Makefile
+--- a/Makefile
++++ b/Makefile
+@@ -395,6 +395,18 @@ else ifeq ($(platform), miyoo)
+    CXXFLAGS += -std=c++11
+    CFLAGS += -std=gnu11
+ 
++# RK3326 devices
++else ifeq ($(platform), rk3326)
++   CPUFLAGS := -mcpu=cortex-a35+crypto -Ofast -fno-plt -fno-semantic-interposition -ftracer -fgcse-sm -fgcse-las -fipa-pta -DNDEBUG
++   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
++   CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++   TARGET := $(TARGET_NAME)_libretro.so
++   fpic := -fPIC
++   SHARED := -shared -Wl,--version-script=link.T
++   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
++   CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
++   LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto -lrt
++
+ # Windows MSVC 2017 all architectures
+ else ifneq (,$(findstring windows_msvc2017,$(platform)))
+ 
+@@ -648,7 +660,7 @@ endif
+ ifeq ($(DEBUG),1)
+    FLAGS += -O0 -g
+ else
+-   FLAGS += -O2 -DNDEBUG $(EXTRA_GCC_FLAGS)
++   FLAGS += -DNDEBUG $(EXTRA_GCC_FLAGS)
+ endif
+ 
+ ifneq (,$(findstring msvc,$(platform)))
