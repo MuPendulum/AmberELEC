@@ -41,7 +41,7 @@ make_target() {
   if [ "$ARCH" == "arm" ]; then
     CFLAGS="$CFLAGS -DALIGN_LONG"
   fi
-  make -f Makefile.libretro
+  make -f Makefile.libretro platform=rk3326
 }
 
 makeinstall_target() {

@@ -1,0 +1,36 @@
+diff --git a/Makefile.libretro b/Makefile.libretro
+--- a/Makefile.libretro
++++ b/Makefile.libretro
+@@ -487,6 +487,21 @@ else ifeq ($(platform), miyoo)
+    USE_PER_SOUND_CHANNELS_CONFIG = 0
+    MAX_ROM_SIZE = 16777216
+ 
++# RK3326 devices
++else ifeq ($(platform), rk3326)
++   CPUFLAGS := -mcpu=cortex-a35+crypto -Ofast -fno-plt -fno-semantic-interposition -ftracer -fgcse-sm -fgcse-las -fipa-pta -DNDEBUG
++   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
++   CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++   TARGET := $(TARGET_NAME)_libretro.so
++   fpic := -fPIC
++   SHARED := -shared -Wl,--version-script=$(CORE_DIR)/libretro/link.T
++   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
++   CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
++   LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto
++   ENDIANNESS_DEFINES := -DLSB_FIRST -DBYTE_ORDER=LITTLE_ENDIAN
++   PLATFORM_DEFINES := -DHAVE_ZLIB
++   MAX_ROM_SIZE = 33554432
++
+ # Windows MSVC 2003 Xbox 1
+ else ifeq ($(platform), xbox1_msvc2003)
+ TARGET := $(TARGET_NAME)_libretro_xdk1.lib
+@@ -771,8 +786,8 @@ ifneq (,$(findstring msvc,$(platform)))
+    CFLAGS   += -MT
+    CXXFLAGS += -MT
+ endif
+-   CFLAGS   += -O2 -DNDEBUG
+-   CXXFLAGS += -O2 -DNDEBUG
++   CFLAGS   += -DNDEBUG
++   CXXFLAGS += -DNDEBUG
+ endif
+ 
+ ifeq ($(SHARED_LIBVORBIS),)
