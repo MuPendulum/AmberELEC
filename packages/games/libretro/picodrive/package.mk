@@ -24,7 +24,7 @@ configure_target() {
 make_target() {
   cd $PKG_BUILD
 #  $PKG_BUILD/configure --platform=generic
-  make -f Makefile.libretro
+  make -f Makefile.libretro platform=rk3326
 }
 
 makeinstall_target() {
