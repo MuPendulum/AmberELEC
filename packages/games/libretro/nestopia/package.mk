@@ -39,7 +39,7 @@ PKG_USE_CMAKE="no"
 
 make_target() {
   cd $PKG_BUILD
-  make -C libretro
+  make -C libretro platform=rk3326
 }
 
 makeinstall_target() {
