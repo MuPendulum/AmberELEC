@@ -18,6 +18,8 @@ make_target() {
   cd ${PKG_BUILD}
   if [ ! "${ARCH}" = "aarch64" ]; then
     make -f Makefile.libretro GIT_VERSION=${PKG_VERSION} platform=rpi3
+  else
+    make -f Makefile.libretro GIT_VERSION=${PKG_VERSION} platform=rk3326
   fi
 }
 
@@ -26,9 +28,5 @@ makeinstall_target() {
 
   mkdir -p ${INSTALL}${INSTALLTO}
   cd ${PKG_BUILD}
-  if [ "${ARCH}" = "aarch64" ]; then
-    cp -vP ${PKG_BUILD}/../../build.${DISTRO}-${DEVICE}.arm/pcsx_rearmed-*/.install_pkg/usr/lib/libretro/pcsx_rearmed_libretro.so ${INSTALL}${INSTALLTO}
-  else
-    cp pcsx_rearmed_libretro.so ${INSTALL}${INSTALLTO}
-  fi
+  cp pcsx_rearmed_libretro.so ${INSTALL}${INSTALLTO}
 }

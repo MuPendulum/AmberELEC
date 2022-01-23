@@ -163,7 +163,7 @@ then
 fi
 
 sleep 0.2
-if [[ "$1" =~ "pcsx_rearmed" ]] || [[ "$1" =~ "parallel_n64" ]]
+if [[ "$1" =~ "parallel_n64" ]]
 then
     echo 'using 32bit'
   	export LD_LIBRARY_PATH="/usr/lib32"
