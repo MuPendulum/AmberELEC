@@ -35,6 +35,8 @@ PKG_TOOLCHAIN="make"
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
 
+PKG_MAKE_OPTS_TARGET="platform=rk3326"
+
 makeinstall_target() {
   mkdir -p $INSTALL/usr/lib/libretro
   cp $PKG_BUILD/mednafen_supafaust_libretro.so $INSTALL/usr/lib/libretro/beetle_supafaust_libretro.so

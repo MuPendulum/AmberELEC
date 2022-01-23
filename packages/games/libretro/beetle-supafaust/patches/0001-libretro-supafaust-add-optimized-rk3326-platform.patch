@@ -1,0 +1,31 @@
+diff --git a/Makefile b/Makefile
+--- a/Makefile
++++ b/Makefile
+@@ -265,6 +265,18 @@ else ifeq ($(platform), emscripten)
+    TARGET := $(TARGET_NAME)_libretro_$(platform).bc
+    STATIC_LINKING = 1
+ 
++# RK3326 devices
++else ifeq ($(platform), rk3326)
++   CPUFLAGS := -mcpu=cortex-a35+crypto -O3 -fno-plt -fno-semantic-interposition -ftracer -fgcse-sm -fgcse-las -fipa-pta -DNDEBUG
++   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
++   CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++   TARGET := $(TARGET_NAME)_libretro.so
++   fpic := -fPIC
++   SHARED := -shared -Wl,--version-script=link.T
++   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES) -pthread
++   CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES) -pthread
++   LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto -pthread
++
+ # Windows MSVC 2003 x86
+ else ifeq ($(platform), windows_msvc2003_x86)
+ 	CC  = cl.exe
+@@ -317,7 +329,7 @@ OBJECTS := $(SOURCES_CXX:.cpp=.o) $(SOURCES_C:.c=.o)
+ all: $(TARGET)
+ 
+ ifeq ($(DEBUG),0)
+-   FLAGS += -O2 -DNDEBUG
++   FLAGS += -DNDEBUG
+ else
+    FLAGS += -O0 -g -DDEBUG
+ endif
