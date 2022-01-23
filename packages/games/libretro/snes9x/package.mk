@@ -41,7 +41,7 @@ make_target() {
     CXXFLAGS="$CXXFLAGS -DARM"
   fi
   
-  make -C libretro
+  make -C libretro platform=rk3326
 }
 
 makeinstall_target() {

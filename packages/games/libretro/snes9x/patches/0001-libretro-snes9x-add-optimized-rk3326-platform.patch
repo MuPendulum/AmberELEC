@@ -1,0 +1,49 @@
+diff --git a/libretro/Makefile b/libretro/Makefile
+--- a/libretro/Makefile
++++ b/libretro/Makefile
+@@ -361,6 +361,19 @@ else ifeq ($(platform), emscripten)
+    STATIC_LINKING=1
+    STATIC_LINKING_LINK=1
+ 
++# RK3326 devices
++else ifeq ($(platform), rk3326)
++   CPUFLAGS := -mcpu=cortex-a35+crypto -Ofast -fno-plt -fno-semantic-interposition -ftracer -fgcse-sm -fgcse-las -fipa-pta -DNDEBUG
++   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
++   CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++   TARGET := $(TARGET_NAME)_libretro.so
++   fpic := -fPIC
++   SHARED := -shared -Wl,--version-script=link.T
++   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES) -DUNZIP_SUPPORT
++   CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES) -DUNZIP_SUPPORT
++   LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto
++   LIBS += -lz
++
+ # Windows MSVC 2003 Xbox 1
+ else ifeq ($(platform), xbox1_msvc2003)
+ CFLAGS += -D__WIN32__
+@@ -625,8 +638,8 @@ ifneq (,$(findstring msvc,$(platform)))
+    CFLAGS += -O2 -DNDEBUG
+    CXXFLAGS += -O2 -DNDEBUG
+ else
+-   CFLAGS += -O3 -DNDEBUG
+-   CXXFLAGS += -O3 -DNDEBUG
++   CFLAGS += -DNDEBUG
++   CXXFLAGS += -DNDEBUG
+ endif
+ 
+    ifneq (,$(findstring msvc,$(platform)))
+diff --git a/libretro/Makefile.common b/libretro/Makefile.common
+--- a/libretro/Makefile.common
++++ b/libretro/Makefile.common
+@@ -74,4 +74,9 @@ ifneq (,$(findstring win,$(platform)))
+    INCFLAGS += -I$(CORE_DIR)/unzip
+    SOURCES_C += $(CORE_DIR)/unzip/unzip.c \
+                 $(CORE_DIR)/unzip/ioapi.c
+-endif
+\ No newline at end of file
++endif
++ifneq (,$(findstring rk3326,$(platform)))
++   INCFLAGS += -I$(CORE_DIR)/unzip
++   SOURCES_C += $(CORE_DIR)/unzip/unzip.c \
++                $(CORE_DIR)/unzip/ioapi.c
++endif
