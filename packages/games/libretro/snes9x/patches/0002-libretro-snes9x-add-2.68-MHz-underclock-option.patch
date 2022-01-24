@@ -1,0 +1,27 @@
+diff --git a/libretro/libretro.cpp b/libretro/libretro.cpp
+--- a/libretro/libretro.cpp
++++ b/libretro/libretro.cpp
+@@ -451,6 +451,12 @@ static void update_variables(void)
+             Settings.OneSlowClockCycle  = 6;
+             Settings.TwoClockCycles     = 12;
+         }
++        else if (strcmp(var.value, "8cycles") == 0)
++        {
++            Settings.OneClockCycle      = 8;
++            Settings.OneSlowClockCycle  = 8;
++            Settings.TwoClockCycles     = 12;
++        }
+     }
+ 
+     Settings.MaxSpriteTilesPerLine = 34;
+diff --git a/libretro/libretro_core_options.h b/libretro/libretro_core_options.h
+--- a/libretro/libretro_core_options.h
++++ b/libretro/libretro_core_options.h
+@@ -236,6 +236,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
+       "hacks",
+       {
+          { "disabled",   NULL },
++         { "8cycles",    "2.68 MHz" },
+          { "light",      "Light" },
+          { "compatible", "Compatible" },
+          { "max",        "Max" },
