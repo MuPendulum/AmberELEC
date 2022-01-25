@@ -41,7 +41,7 @@ make_target() {
   if [ "$ARCH" == "arm" ]; then
     make CC=$CC platform=unix
   else
-    make CC=$CC
+    make CC=$CC platform=rk3326
   fi  
 }
 
