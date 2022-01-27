@@ -347,7 +347,7 @@ else
 
 	### Check if we need retroarch 32 bits or 64 bits
 	RABIN="retroarch"
-	if [[ "${CORE}" =~ "parallel_n64" ]]
+	if [[ "${CORE}" =~ "pcsx_rearmed" ]] || [[ "${CORE}" =~ "parallel_n64" ]]
 	then
 		export LD_LIBRARY_PATH="/usr/lib32"
 		RABIN="retroarch32"

@@ -13,13 +13,14 @@ diff --git a/Makefile b/Makefile
 diff --git a/Makefile.libretro b/Makefile.libretro
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
-@@ -455,6 +455,21 @@ else ifeq ($(platform), emscripten)
+@@ -455,6 +455,22 @@ else ifeq ($(platform), emscripten)
     CFLAGS += -DNO_DYLIB -DNO_SOCKET
     STATIC_LINKING = 1
  
 +# RK3326 devices
 +else ifeq ($(platform), rk3326)
 +	CPUFLAGS := -mcpu=cortex-a35+crypto -Ofast -fno-plt -fno-semantic-interposition -ftracer -fgcse-sm -fgcse-las -fipa-pta -DNDEBUG
++	CPUFLAGS += -marm -mfloat-abi=hard
 +	LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
 +	CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
 +	TARGET := $(TARGET_NAME)_libretro.so
@@ -27,10 +28,10 @@ diff --git a/Makefile.libretro b/Makefile.libretro
 +	CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
 +	CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
 +	LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto
-+	ARCH := arm64
-+	BUILTIN_GPU = unai
++	ARCH := arm
++	HAVE_NEON = 1
++	BUILTIN_GPU = neon
 +	DYNAREC = ari64
-+	THREAD_RENDERING = 1
 +
  # Windows
  else
